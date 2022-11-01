@@ -48,14 +48,16 @@ class Scene2 extends Phaser.Scene {
         }
 
 
-        this.enemy_small = new Enemy(this, "enemy-small", "enemy-small_anim", 1);
-        this.enemy_medium = new Enemy(this, "enemy-medium", "enemy-medium_anim", 2);
+        // this.enemy_small = new Enemy(this, "enemy-small", "enemy-small_anim", 1);
+        // this.enemy_medium = new Enemy(this, "enemy-medium", "enemy-medium_anim", 2);
         this.enemy_big = new Enemy(this, "enemy-big", "enemy-big_anim", 2.5);
-        
+
+        // this.enemy_big.seek()
+
         this.projectiles = this.add.group()
         this.enemies = this.physics.add.group()
-        this.enemies.add(this.enemy_small)
-        this.enemies.add(this.enemy_medium)
+        // this.enemies.add(this.enemy_small)
+        // this.enemies.add(this.enemy_medium)
         this.enemies.add(this.enemy_big)
         
         this.powerUps = this.physics.add.group();
@@ -107,9 +109,10 @@ class Scene2 extends Phaser.Scene {
             beam.update();
         }
 
-        this.enemy_small.move();
-        this.enemy_medium.move();
-        this.enemy_big.move();
+        // this.enemy_small.move();
+        // this.enemy_medium.move();
+        // this.moveAlongPath(this.enemy_big);
+
     }
 
     enemyTakeHit(projectile, enemy){
