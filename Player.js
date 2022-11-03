@@ -94,6 +94,9 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         if (player.shotLvl < player.maxShotLvl) {
             player.shotLvl++;
         }
+        else {
+            this.setScore(5);
+        }
 
         this.pickUpSound.play();
         this.currentPowerUp--;

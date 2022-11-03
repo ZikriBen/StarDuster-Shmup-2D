@@ -11,6 +11,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.targetIndex = 0;
 
         this.isSeeking = true;
+        this.hp = new HealthBar(scene, this.x, this.y);
         
         this.points = [
             new Phaser.Geom.Circle(50, 50, 32),
@@ -36,6 +37,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite{
     }
 
     resetPos() {
+        this.hp.value = 100
+        this.hp.draw();
         this.y = 0
         this.x = Phaser.Math.Between(0, config.width);
     }
@@ -72,6 +75,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     preUpdate (time, delta)
     {
+        this.hp.move(this.x, this.y)
         super.preUpdate(time, delta);
 
         //  Is the ship within the radius of the target?
@@ -86,4 +90,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite{
             this.scene.physics.velocityFromRotation(angle, this.speed, this.body.velocity);
         }
     }
+
+
 }

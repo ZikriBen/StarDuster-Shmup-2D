@@ -32,7 +32,7 @@ class Scene2 extends Phaser.Scene {
         this.score = 0;
         this.scoreSize = 6;
         this.maxLives = 5;
-        this.maxPowerUp = 3;
+        this.maxPowerUp = 2;
         this.currentPowerUp = 0;
         this.life = 3;
         this.scoreLabel.text = "SCORE " + "0".repeat(this.scoreSize);
@@ -118,12 +118,14 @@ class Scene2 extends Phaser.Scene {
     enemyTakeHit(projectile, enemy){
         projectile.destroy()
         this.explosionSound.play()
-        this.score += 15;
-        this.scoreLabel.text = "SCORE " + this.zeroPad(this.score, this.scoreSize)
-        new Explosion(this, enemy.x, enemy.y);
-        enemy.resetPos()
+        this.setScore(15)
+        
+        if (enemy.hp.decrease(10)) {
+            new Explosion(this, enemy.x, enemy.y);
+            enemy.resetPos()
+        }
 
-        if (this.score % 150 === 0) {
+        if (this.score % 60 === 0) {
             this.generatePowerUp()
         }
     }
@@ -145,7 +147,8 @@ class Scene2 extends Phaser.Scene {
         powerUp.setVelocity(50, 50);
         powerUp.setCollideWorldBounds(true);
         powerUp.setBounce(0.5);
-        console.log(this.powerUps.getChildren().length)
+        // console.log(this.powerUps.getChildren().length)
+        this.time.delayedCall(4000, this.fadePowerUp, [powerUp], this);
     }
 
     zeroPad(number, size) {
@@ -155,5 +158,29 @@ class Scene2 extends Phaser.Scene {
             stringNumber = "0" + stringNumber;
         }
         return stringNumber;
+    }
+
+    fadePowerUp(powerup) {
+        this.time.delayedCall(4000, this.removePowerUp, [powerup], this);
+        powerup.alpha = 1
+        this.tweens.add({
+            targets: powerup,
+            ease: 'Cubic.easeOut',
+            duration: 600,
+            repeat:-1,
+            alpha: 0.7,
+            yoyo: true,
+            callbackScope: this
+        });
+    }
+
+    removePowerUp(powerup) {
+        // powerup.disableBody(true, true);
+        powerup.destroy();
+    }
+
+    setScore(addVal) {
+        this.score += addVal;
+        this.scoreLabel.text = "SCORE " + this.zeroPad(this.score, this.scoreSize)
     }
 }
